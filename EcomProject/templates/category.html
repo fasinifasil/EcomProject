@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+{% if category %}
+  {{category.description | truncatewords:155 }}
+{% else %}
+  Welcome Ecom Tech pvt
+{% endif %}
+{% endblock %}
+
+{% block title %}
+{% if category %}
+  {{category.name}}Ecom Tech pvt
+{% else %}
+ Welcome Ecom Tech pvt
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+{% if category %}
+<div>
+  <div class="row my_row_class">
+    <div class="mx-auto">
+
+    <p><a href="{% url 'app1:allProdCat' %}" >Our Product Collection</a></p>
+  </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="mx-auto">
+  {% if category %}
+  <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+<br>
+<div>
+  <h2 class="text-center my_title">{{category.name}}</h2>
+  <p class="text-justify">{{category.description}}</p>
+</div>
+{% else %}
+<div>
+      <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" width="1290px" height="250px" alt="oru products">
+
+    </div>
+<br>
+<div>
+  <h1 class="text-center my_title">Our Product Collections</h1>
+  <p class="text-justify">We offer a wide range of products from everyday promotional pieces to unique, custom made gifts. Our experts are at your service with the latest trends </p>
+
+</div>
+
+
+{% endif %}
+
+<div class="container">
+
+  <div class="row mx-auto">
+
+    {% for product in products.object_list %}
+    <div class="my-bottom-margin col-9 col-sm-12 col-md-4 col-lg-4 mt-4" >
+      <div class="card text-center" style="min_width:18rem; height=100%;">
+        <a href="{{product.get_url}}"><img src="{{product.image.url}}" style="padding-top: 10px;" width="200px" height="200px"  alt="{{product.name}}"></a>
+        <div class="card-body">
+          <h4><b>{{product.name}}</b></h4>
+          <p>{{product.price}}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="mx-auto">
+    {%if products.paginator.num_pages > 1 %}
+    <hr>
+    <div class="text-center">
+      {% for pg in products.paginator.page_range %}
+      <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} actiive {% endif %}">{{pg}}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
